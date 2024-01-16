@@ -1,0 +1,39 @@
+body {
+    width: 1128px;
+    height: 648px;
+    padding: 24px 156px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+
+}
+
+
+.gallery {
+    max-width: 1128px;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    gap: 24px;
+    margin: 0;
+}
+
+.gallery-image {
+    min-width: 360px;
+    height: 200px;
+}
+
+.modal {
+    min-width: 1112px;
+    min-height: 640px;
+    background: rgba(46, 47, 66, 0.80);
+
+
+}
