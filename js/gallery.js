@@ -64,47 +64,54 @@ const images = [
   },
 ];
 
-const container = document.querySelector(".gallery");
+const gallery = document.querySelector(".gallery");
 
-container.innerHTML = images.reduce(
-  (html, { preview, original, description }) =>
-    html +
-    `
-<li class="gallery-item">
-<a class="gallery-link" href="${original}">
-  <img
-    class="gallery-image"
-    src="${preview}"
-    data-source="${original}"
-    alt="${description}"
-  />
-</a>
+function createGallery({ preview, original, description }) {
+  return `
+  <li class="gallery-item">
+  <a class="gallery-link" href="${original}">
+    <img
+      class="gallery-image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+    />
+  </a>
 </li>
-`,
-  ""
-);
+`;
+}
 
-container.addEventListener("click", (event) => {
+function galleryClick(e) {
   event.preventDefault();
+  if (e.target.nodeName !== "IMG") {
+    return;
+  }
+  const url = e.target.dataset.source;
+  const modal = basicLightbox.create(
+    `<img class="modal" src="${url}">`,
+    {
+      onShow: () => {
+        document.addEventListener("keydown", onKeyPress);
+      },
+      onClose: () => {
+        document.removeEventListener("keydown", onKeyPress);
+      },
+    }
+  );
 
-  const imageSource = event.target.dataset.source;
+  modal.show();
 
-  if (imageSource) {
-    const source = images.find((img) => img.original === imageSource);
-
-    const instance = basicLightbox.create(`
-    <img class="modal" src="${imageSource}" width="1112px" height="640px">
-    `);
-
-    instance.show();
-
-    document.addEventListener("keydown", handleKeyPress);
-
-    function handleKeyPress(event) {
-      const closekey = 27;
-      if (event.keyCode === closekey) {
-        instance.close();
-      }
+  function onKeyPress(elem) {
+    if (elem.key === "Escape") {
+      modal.close();
     }
   }
-});
+}
+
+function newGallery() {
+  const galleryItemsHTML = images.map(createGallery).join("");
+  gallery.innerHTML = galleryItemsHTML;
+  gallery.addEventListener("click", galleryClick);
+}
+
+newGallery();
