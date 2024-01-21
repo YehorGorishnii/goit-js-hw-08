@@ -82,7 +82,7 @@ function createGallery({ preview, original, description }) {
 }
 
 function galleryClick(e) {
-  event.preventDefault();
+  e.preventDefault();
   if (e.target.nodeName !== "IMG") {
     return;
   }
@@ -91,17 +91,17 @@ function galleryClick(e) {
     `<img class="modal" src="${url}">`,
     {
       onShow: () => {
-        document.addEventListener("keydown", onKeyPress);
+        document.addEventListener("keydown", keyPress);
       },
       onClose: () => {
-        document.removeEventListener("keydown", onKeyPress);
+        document.removeEventListener("keydown", keyPress);
       },
     }
   );
 
   modal.show();
 
-  function onKeyPress(elem) {
+  function keyPress(elem) {
     if (elem.key === "Escape") {
       modal.close();
     }
